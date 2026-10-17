@@ -9,9 +9,9 @@ import { formatCurrency, formatDate } from '../../utils/helpers'
 export default function AdminPayments() {
   const { bookings } = useBookings()
   const paid = bookings.filter((b) => b.status === 'completed')
-  const totalOnline = paid.filter((b) => b.paymentStatus === 'paid').reduce((s, b) => s + (Number(b.finalPrice) || 0), 0)
-  const totalCash = paid.filter((b) => b.paymentStatus === 'due').reduce((s, b) => s + (Number(b.finalPrice) || 0), 0)
-
+  const sum = (list) => list.reduce((s, b) => s + (Number(b.finalPrice) || 0), 0)
+  const totalOnline = sum(paid.filter((b) => b.paymentStatus === 'paid' && b.paymentMethod !== 'cash'))
+  const totalCash = sum(paid.filter((b) => b.paymentStatus === 'paid' && b.paymentMethod === 'cash'))
   const columns = [
     { key: 'id', label: 'Booking ID', render: (r) => `#${String(r.id).slice(-6).toUpperCase()}` },
     { key: 'customerName', label: 'Customer' },
@@ -19,7 +19,7 @@ export default function AdminPayments() {
     {
       key: 'paymentStatus',
       label: 'Method',
-      render: (r) => (r.paymentStatus === 'paid' ? 'Online' : r.paymentStatus === 'due' ? 'Cash' : 'Pending'),
+      render: (r) => (r.paymentStatus === 'paid' ? (r.paymentMethod === 'cash' ? 'Cash (received)' : 'Online') : r.paymentStatus === 'due' ? 'Cash due' : 'Pending'),
     },
     { key: 'completedAt', label: 'Date', render: (r) => formatDate(r.completedAt) },
   ]

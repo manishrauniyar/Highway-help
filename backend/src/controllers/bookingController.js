@@ -176,6 +176,26 @@ export async function submitPayment(req, res) {
   });
   res.json(booking.toJSON());
 }
+// Mechanic confirms they received the cash from the customer.
+export async function confirmCashReceived(req, res) {
+  const booking = await loadOwnedBooking(
+    req.params.id,
+    "mechanic",
+    req.user.id,
+  );
+  if (booking.status !== "completed")
+    throw new ApiError(400, "Booking is not completed yet");
+  if (booking.paymentMethod !== "cash" || booking.paymentStatus !== "due")
+    throw new ApiError(400, "No cash payment is waiting for confirmation");
+
+  booking.paymentStatus = "paid";
+  booking.paidAt = new Date();
+  await booking.save();
+  emitToBooking(req, booking.id, "payment_settled", {
+    paymentStatus: booking.paymentStatus,
+  });
+  res.json(booking.toJSON());
+}
 
 export async function submitRating(req, res) {
   const { rating, review } = req.body;

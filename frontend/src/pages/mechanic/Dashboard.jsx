@@ -53,7 +53,9 @@ export default function MechanicDashboard() {
   const pending = myBookings.filter((b) => b.status === 'requested')
   const active = myBookings.filter((b) => ['accepted', 'onway', 'arrived', 'started'].includes(b.status))
   const completed = myBookings.filter((b) => b.status === 'completed')
-  const earnings = completed.reduce((sum, b) => sum + (Number(b.finalPrice) || 0), 0)
+  // Earnings count only after the customer has actually paid
+  const earnings = completed.filter((b) => b.paymentStatus === 'paid').reduce((sum, b) => sum + (Number(b.finalPrice) || 0), 0)
+  const awaiting = completed.filter((b) => b.paymentStatus !== 'paid').reduce((sum, b) => sum + (Number(b.finalPrice) || 0), 0)
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
@@ -95,7 +97,7 @@ export default function MechanicDashboard() {
         </Card>
         <Card className="p-4 col-span-2 sm:col-span-1">
           <p className="text-2xl font-display">{formatCurrency(earnings)}</p>
-          <p className="text-xs text-slate-muted mt-1">Total Earnings</p>
+          <p className="text-xs text-slate-muted mt-1">{awaiting > 0 && <p className="text-[11px] text-beacon mt-1">{formatCurrency(awaiting)} awaiting payment</p>}Total Earnings</p>
         </Card>
       </div>
 

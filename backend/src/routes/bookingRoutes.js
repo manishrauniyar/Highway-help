@@ -8,6 +8,7 @@ import {
   verifyOtp,
   completeBooking,
   submitPayment,
+  confirmCashReceived,
   submitRating,
   cancelBooking,
   listCustomerBookings,
@@ -29,6 +30,7 @@ router.post("/:id/verify-otp", requireAuth(["mechanic"]), verifyOtp);
 router.patch("/:id/complete", requireAuth(["mechanic"]), completeBooking);
 
 router.post("/:id/payment", requireAuth(["customer"]), submitPayment);
+router.patch("/:id/cash-received", requireAuth(["mechanic"]), confirmCashReceived);
 router.post("/:id/rating", requireAuth(["customer"]), submitRating);
 router.patch("/:id/cancel", requireAuth(["customer"]), cancelBooking);
 

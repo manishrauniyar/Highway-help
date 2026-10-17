@@ -12,6 +12,7 @@ import StatusBadge from '../../components/common/StatusBadge'
 import { PhoneIcon, WalletIcon } from '../../components/common/Icons'
 import { formatCurrency } from '../../utils/helpers'
 import api, { getErrorMessage } from '../../utils/api'
+import TrackingMap from '../../components/customer/TrackingMap'
 
 export default function BookingTracking() {
   const { id } = useParams()
@@ -126,7 +127,7 @@ export default function BookingTracking() {
 
       {isActive && (
         <>
-          <MapPlaceholder mode="tracking" mechanicName={booking.mechanicName} etaMin={booking.etaMin} className="h-64 mb-6" />
+          <TrackingMap booking={booking} className="h-64 mb-6" />
 
           <Card className="p-5 mb-6">
             <BookingStatusTracker status={booking.status} />

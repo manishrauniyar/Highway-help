@@ -132,6 +132,9 @@ export function BookingProvider({ children }) {
   const rejectBooking = useCallback((id) => run(() => api.patch(`/bookings/${id}/reject`)), [run])
   // status must be 'onway' or 'arrived'
   const advanceStatus = useCallback((id, status) => run(() => api.patch(`/bookings/${id}/status`, { status })), [run])
+
+    // Mechanic confirms the customer's cash payment was received
+  const confirmCashReceived = useCallback((id) => run(() => api.patch(`/bookings/${id}/cash-received`)), [run])
   const finalizeService = useCallback((id, finalPrice) => run(() => api.patch(`/bookings/${id}/complete`, { finalPrice })), [run])
 
   // Resolves to { success, message } like the old mock version.
@@ -168,6 +171,7 @@ export function BookingProvider({ children }) {
     submitRating,
     getBookingsForCustomer,
     getBookingsForMechanic,
+    confirmCashReceived,
   }
 
   return <BookingContext.Provider value={value}>{children}</BookingContext.Provider>

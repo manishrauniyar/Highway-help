@@ -30,7 +30,7 @@ export async function listBookings(req, res) {
 }
 
 export async function listPayments(req, res) {
-  const payments = await Booking.find({ status: "completed" }).sort({
+  const payments = await Booking.find({ status: "completed", paymentStatus: "paid"  }).sort({
     completedAt: -1,
   });
   res.json(payments.map((b) => b.toJSON()));
@@ -42,7 +42,7 @@ export async function getOverview(req, res) {
       User.countDocuments(),
       Mechanic.countDocuments(),
       Booking.countDocuments(),
-      Booking.find({ status: "completed" }),
+      Booking.find({ status: "completed", paymentStatus: "paid" }),
     ]);
   const revenue = completedBookings.reduce(
     (sum, b) => sum + (b.finalPrice || 0),

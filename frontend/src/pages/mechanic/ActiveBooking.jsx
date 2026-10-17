@@ -7,12 +7,14 @@ import StatusBadge from '../../components/common/StatusBadge'
 import OTPInput from '../../components/common/OTPInput'
 import { LocationIcon, PhoneIcon } from '../../components/common/Icons'
 import { formatCurrency } from '../../utils/helpers'
+import useShareLocation from '../../hooks/useShareLocation'
 
 export default function MechanicActiveBooking() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { bookings, loading, advanceStatus, verifyOtp, finalizeService } = useBookings()
   const booking = bookings.find((b) => b.id === id)
+  useShareLocation(booking)
   const [otp, setOtp] = useState('')
   const [otpError, setOtpError] = useState('')
   const [price, setPrice] = useState(booking?.price?.min || '')

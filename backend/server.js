@@ -19,6 +19,8 @@ import petrolPumpRoutes from "./src/routes/petrolPumpRoutes.js";
 import complaintRoutes from "./src/routes/complaintRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
+import mapRoutes from "./src/routes/mapRoutes.js";
+import aiRoutes from "./src/routes/aiRoutes.js";
 
 
 const app = express();
@@ -40,6 +42,8 @@ app.use("/api/petrol-pumps", petrolPumpRoutes);
 app.use("/api/complaints", complaintRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/maps", mapRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
